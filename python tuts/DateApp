@@ -1,0 +1,8 @@
+from datetime import datetime, timedelta
+
+# Starting date
+start_date = datetime(2024, 9, 2)
+
+# Add 16 weeks
+result_date = start_date + timedelta(weeks=16)
+result_date.strftime('%Y-%m-%d')
