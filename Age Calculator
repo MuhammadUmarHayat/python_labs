@@ -1,0 +1,11 @@
+from datetime import datetime
+
+# User's date of birth
+dob = datetime(1983, 12, 15)
+
+# Current date
+current_date = datetime.now()
+
+# Calculate age
+age = current_date.year - dob.year - ((current_date.month, current_date.day) < (dob.month, dob.day))
+age
