@@ -1,0 +1,13 @@
+# Step 1: Install pyshorteners
+# pip install pyshorteners
+
+import pyshorteners
+
+# Step 2: Initialize the shortener service
+shortener = pyshorteners.Shortener()
+
+# Step 3: Shorten the URL (using TinyURL as the default service)
+long_url = "https://github.com/your-github-profile"
+short_url = shortener.tinyurl.short(long_url)
+
+print("Short URL:", short_url)
