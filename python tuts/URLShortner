@@ -11,3 +11,10 @@ long_url = "https://github.com/your-github-profile"
 short_url = shortener.tinyurl.short(long_url)
 
 print("Short URL:", short_url)
+############################################################# Alternate##################################################################
+# Bitly Shortener Example (Requires Bitly API Key)
+shortener = pyshorteners.Shortener(api_key='YOUR_BITLY_API_KEY')
+long_url = "https://github.com/your-github-profile"
+short_url = shortener.bitly.short(long_url)
+
+print("Short URL:", short_url)
