@@ -1,0 +1,57 @@
+Here's a simple Python script to generate a QR code from a URL or text using the `qrcode` library. First, you need to install the library:
+
+```bash
+pip install qrcode[pil]
+```
+
+Then, you can use the following Python code to generate a QR code:
+
+### QR Code Generator (URL or Text)
+```python
+import qrcode
+
+def generate_qr_code(data, filename='qrcode.png'):
+    # Create a QR code instance
+    qr = qrcode.QRCode(
+        version=1,  # Controls the size of the QR code, higher = larger
+        error_correction=qrcode.constants.ERROR_CORRECT_L,  # About 7% or less error correction
+        box_size=10,  # Size of each box
+        border=4,  # Thickness of the border
+    )
+    
+    # Add data (URL or text) to the QR code
+    qr.add_data(data)
+    qr.make(fit=True)
+    
+    # Create the image from the QR code instance
+    img = qr.make_image(fill="black", back_color="white")
+    
+    # Save the image to a file
+    img.save(filename)
+    print(f"QR code generated and saved as {filename}")
+
+# Example usage:
+data = "https://www.example.com"  # Replace with any URL or text
+generate_qr_code(data)
+```
+
+### How it works:
+1. **Input**: The function accepts a URL or text as the `data` parameter.
+2. **QR Code Generation**: It uses the `qrcode` library to generate the QR code.
+3. **Image Saving**: The generated QR code is saved as a PNG image (default name is `qrcode.png`).
+4. **Output**: You can scan the generated QR code with any QR code reader.
+
+### Example Usage:
+- To generate a QR code for a URL:
+  ```python
+  data = "https://www.example.com"
+  generate_qr_code(data)
+  ```
+  
+- To generate a QR code for text:
+  ```python
+  data = "Hello, this is a text QR code!"
+  generate_qr_code(data)
+  ```
+
+You can adjust the `filename` parameter to save the QR code with a custom name.
