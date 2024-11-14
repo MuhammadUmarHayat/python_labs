@@ -1,0 +1,43 @@
+import time
+import random
+
+# List of sample sentences
+sentences = [
+    "The quick brown fox jumps over the lazy dog.",
+    "Typing speed test is a fun way to improve typing.",
+    "Python is a great programming language for beginners.",
+    "Consistency is the key to success in learning programming.",
+    "Practice makes perfect in typing as well as in coding."
+]
+
+def typing_speed_test():
+    # Choose a random sentence from the list
+    sentence = random.choice(sentences)
+    print("Type the following sentence as quickly and accurately as you can:")
+    print(sentence)
+    
+    # Record the start time
+    input("Press Enter when you are ready...")
+    start_time = time.time()
+    
+    # Get user input
+    user_input = input("\nType here: ")
+    
+    # Record the end time
+    end_time = time.time()
+    
+    # Calculate time taken and words per minute (WPM)
+    time_taken = end_time - start_time
+    words_per_minute = (len(user_input.split()) / time_taken) * 60
+
+    # Calculate accuracy
+    correct_words = sum(1 for i, word in enumerate(user_input.split()) if i < len(sentence.split()) and word == sentence.split()[i])
+    accuracy = (correct_words / len(sentence.split())) * 100
+    
+    # Display results
+    print(f"\nTime taken: {time_taken:.2f} seconds")
+    print(f"Your typing speed is: {words_per_minute:.2f} WPM")
+    print(f"Accuracy: {accuracy:.2f}%")
+
+# Run the typing speed test
+typing_speed_test()
