@@ -1,0 +1,79 @@
+#index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Comparison</title>
+</head>
+<body>
+    <h1>Upload Two Images to Compare</h1>
+    <form action="/compare" method="post" enctype="multipart/form-data">
+        <label for="image1">Image 1:</label>
+        <input type="file" name="image1" id="image1" required><br><br>
+        <label for="image2">Image 2:</label>
+        <input type="file" name="image2" id="image2" required><br><br>
+        <button type="submit">Compare</button>
+    </form>
+</body>
+</html>
+#######################################
+##ap.py
+from flask import Flask, request, render_template, jsonify
+import cv2
+import numpy as np
+import os
+
+app = Flask(__name__)
+UPLOAD_FOLDER = 'uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Helper function to compare two images
+def compare_images(image1_path, image2_path):
+    img1 = cv2.imread(image1_path)
+    img2 = cv2.imread(image2_path)
+
+    # Check if dimensions are equal
+    if img1.shape != img2.shape:
+        return False
+
+    # Calculate the difference
+    difference = cv2.subtract(img1, img2)
+    b, g, r = cv2.split(difference)
+
+    # If all channels are zero, the images are equal
+    return not (np.any(b) or np.any(g) or np.any(r))
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/compare', methods=['POST'])
+def compare():
+    if 'image1' not in request.files or 'image2' not in request.files:
+        return jsonify({'error': 'Both image files are required'}), 400
+
+    image1 = request.files['image1']
+    image2 = request.files['image2']
+
+    # Save the uploaded images
+    image1_path = os.path.join(app.config['UPLOAD_FOLDER'], image1.filename)
+    image2_path = os.path.join(app.config['UPLOAD_FOLDER'], image2.filename)
+
+    image1.save(image1_path)
+    image2.save(image2_path)
+
+    # Compare the images
+    are_equal = compare_images(image1_path, image2_path)
+
+    # Remove the uploaded images
+    os.remove(image1_path)
+    os.remove(image2_path)
+
+    return jsonify({'are_equal': are_equal})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+pip install flask opencv-python-headless numpy
