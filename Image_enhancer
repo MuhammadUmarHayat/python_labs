@@ -1,0 +1,24 @@
+from PIL import Image, ImageEnhance, ImageFilter
+
+# Load the image
+image_path = "/mnt/data/DB.bmp"
+image = Image.open(image_path)
+
+# Apply enhancements
+image = image.convert("RGB")  # Ensure it's in RGB mode
+image = image.filter(ImageFilter.SHARPEN)  # Sharpen the image
+image = image.filter(ImageFilter.MedianFilter(size=3))  # Reduce noise
+
+# Enhance contrast and brightness
+contrast = ImageEnhance.Contrast(image)
+image = contrast.enhance(1.5)  # Increase contrast
+
+brightness = ImageEnhance.Brightness(image)
+image = brightness.enhance(1.2)  # Increase brightness
+
+# Save the processed image
+processed_image_path = "/mnt/data/DB_cleaned.bmp"
+image.save(processed_image_path)
+
+# Provide download link
+processed_image_path
